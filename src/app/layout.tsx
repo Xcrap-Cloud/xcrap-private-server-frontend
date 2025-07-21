@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google"
 import type { Metadata } from "next"
 
+import { Toaster } from "@/components/ui/sonner"
 import Providers from "./providers"
 import "./globals.css"
 
@@ -15,7 +16,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-    title: "Bolierplate",
+    title: "Xcrap",
     description: "Created by Marcuth",
 }
 
@@ -32,6 +33,7 @@ export default function RootLayout({
             </head>
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <Providers>{children}</Providers>
+                <Toaster />
             </body>
         </html>
     )

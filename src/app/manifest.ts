@@ -2,9 +2,9 @@ import { MetadataRoute } from "next"
 
 const manifest = (): MetadataRoute.Manifest => {
     return {
-        name: "Bolierplate By Marcuth",
-        short_name: "Bolierplate",
-        description: "Bolierplate created by Marcuth",
+        name: "Xcrap By Marcuth",
+        short_name: "Xcrap",
+        description: "Xcrap created by Marcuth",
         start_url: "/",
         display: "standalone",
         background_color: "#fff",

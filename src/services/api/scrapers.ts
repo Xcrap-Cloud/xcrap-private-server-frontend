@@ -1,5 +1,5 @@
-import { CreateScraperDto } from "../../dto/scrapers/create-scraper"
 import { UpdateScraperDto } from "../../dto/scrapers/update-scraper"
+import { CreateScraperDto } from "../../dto/scrapers/create-scraper"
 import { api } from "."
 
 interface CreateScraperResponse {
