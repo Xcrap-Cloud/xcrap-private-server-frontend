@@ -1,3 +1,4 @@
+import { ExecuteScraperDto } from "../../dto/scrapers/execute-scraper"
 import { UpdateScraperDto } from "../../dto/scrapers/update-scraper"
 import { CreateScraperDto } from "../../dto/scrapers/create-scraper"
 import { api } from "."
@@ -52,7 +53,7 @@ export interface FindOneScraperResponse {
     parsingModel: ParsingModel
 }
 
-interface ParsingModel {
+export interface ParsingModel {
     type: string
     model: Model
 }
@@ -162,7 +163,7 @@ export async function findManyScrapers({ page, perPage }: PaginateOptions = {}, 
     return response.data
 }
 
-interface ExecuteOneScraperResponse<T extends any> {
+export interface ExecuteOneScraperResponse<T extends any> {
     readonly metadata: Metadata
     readonly data: T
 }
@@ -195,8 +196,8 @@ interface Parsing {
     duration: number
 }
 
-export async function executeOneScraper<T extends any>(id: string, accessToken: string) {
-    const response = await api.get<ExecuteOneScraperResponse<T>>(`/scrapers/${id}/execute`, {
+export async function executeOneScraper<T extends any>(id: string, data: ExecuteScraperDto, accessToken: string) {
+    const response = await api.post<ExecuteOneScraperResponse<T>>(`/scrapers/${id}/execute`, data, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },

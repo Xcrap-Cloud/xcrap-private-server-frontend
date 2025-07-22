@@ -1,36 +1,86 @@
+"use client"
+
 import { LuBraces, LuFileJson2, LuInfo, LuPlay, LuUnplug } from "react-icons/lu"
+import { useRouter, useSearchParams } from "next/navigation"
 import { HiDotsVertical } from "react-icons/hi"
 import { FaSpider } from "react-icons/fa"
-import { FC } from "react"
+import { FC, useState } from "react"
+import { toast } from "sonner"
 
+import { executeOneScraper, ExecuteOneScraperResponse, FindOneScraperResponse } from "@/services/api/scrapers"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import ScraperExecutionDialog from "@/components/features/scraper-execution-dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FindOneScraperResponse } from "@/services/api/scrapers"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Typography } from "@/components/ui/typography"
+import ExecutionOutputTab from "./execution-output-tab"
 import { Separator } from "@/components/ui/separator"
-import formatDateTime from "@/utils/format-date-time"
+import ScraperBasicInfoTab from "./basic-info-tab"
+import ParsingModelTab from "./parsing-model-tab"
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
+import Spinner from "@/components/ui/spinner"
 import { Link } from "@/components/ui/link"
 
 type Props = {
     data: FindOneScraperResponse
+    accessToken: string
 }
 
-const ScraperPageSection: FC<Props> = ({ data }) => {
+const ScraperPageSection: FC<Props> = ({ data, accessToken }) => {
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    const [executionResponse, setExecutionResponse] = useState<ExecuteOneScraperResponse<any> | null>(null)
+    const [isExecuting, setIsExecuting] = useState(false)
+
+    const tab = searchParams.get("tab") || "basic-info"
+
+    const handleTabChange = (newTab: string) => {
+        const params = new URLSearchParams(Array.from(searchParams.entries()))
+
+        params.set("tab", newTab)
+
+        router.replace(`?${params.toString()}`, { scroll: false })
+    }
+
+    const handleExecute = async (executeUrl?: string) => {
+        const targetUrl = executeUrl || data.defaultUrl
+
+        if (!targetUrl) {
+            toast.error("Nenhuma URL disponível para execução.")
+            return
+        }
+
+        handleTabChange("execution-output")
+        setIsExecuting(true)
+
+        try {
+            const response = await executeOneScraper<any>(data.id, { url: targetUrl }, accessToken)
+            setExecutionResponse(response)
+        } catch (error) {
+            console.error(error)
+            toast.error("Ocorreu um erro ao executar o scraper.")
+        } finally {
+            setIsExecuting(false)
+        }
+    }
+
     return (
         <section>
-            <Card className="max-w-5xl">
+            <Card>
                 <CardHeader>
                     <CardTitle className="flex justify-between">
                         <div className="flex gap-2 items-center">
                             <FaSpider /> {data.name}
                         </div>
                         <div className="space-x-1">
-                            <Button variant="ghost" className="rounded-full" title="Executar">
-                                <LuPlay />
-                            </Button>
+                            <ScraperExecutionDialog
+                                sholdProvideUrl={data.defaultUrl ? false : true}
+                                onExecute={handleExecute}
+                            >
+                                <Button variant="ghost" className="rounded-full" title="Executar">
+                                    {isExecuting ? <Spinner /> : <LuPlay />}
+                                </Button>
+                            </ScraperExecutionDialog>
                             <Button variant="ghost" className="rounded-full" title="Abrir menu">
                                 <HiDotsVertical />
                             </Button>
@@ -39,7 +89,7 @@ const ScraperPageSection: FC<Props> = ({ data }) => {
                     {data.description && <CardDescription>{data.description}</CardDescription>}
                 </CardHeader>
                 <CardContent>
-                    <Tabs defaultValue="basic-info">
+                    <Tabs value={tab} onValueChange={handleTabChange}>
                         <TabsList className="mb-4">
                             <TabsTrigger value="basic-info">
                                 <LuInfo /> Informações Básicas
@@ -54,34 +104,9 @@ const ScraperPageSection: FC<Props> = ({ data }) => {
                                 <LuUnplug /> API
                             </TabsTrigger>
                         </TabsList>
-                        <TabsContent value="basic-info" className="grid grid-cols-2 gap-x-2 gap-y-6">
-                            <div className="space-y-4">
-                                <Label>Criado em</Label>
-                                <Typography.Muted className="text-sm">
-                                    {formatDateTime(data.createdAt)}
-                                </Typography.Muted>
-                            </div>
-                            <div className="space-y-4">
-                                <Label>Atualizado em</Label>
-                                <Typography.Muted className="text-sm">
-                                    {formatDateTime(data.updatedAt)}
-                                </Typography.Muted>
-                            </div>
-                            <div className="space-y-4">
-                                <Label>URL Padrão</Label>
-                                <Typography.Muted className="text-sm">
-                                    {data.defaultUrl ? data.defaultUrl : "Não definida."}
-                                </Typography.Muted>
-                            </div>
-                            <div className="space-y-4">
-                                <Label>Cliente</Label>
-                                <Link href={`/clients/${data.clientId}`} className="text-sm">
-                                    {data.clientId}
-                                </Link>
-                            </div>
-                        </TabsContent>
-                        <TabsContent value="parsing-model">Modelo de Parsing</TabsContent>
-                        <TabsContent value="execution-output">Saída de execução</TabsContent>
+                        <ScraperBasicInfoTab data={data} />
+                        <ParsingModelTab data={data} />
+                        <ExecutionOutputTab response={executionResponse} scraper={data}/>
                         <TabsContent value="api">API</TabsContent>
                     </Tabs>
                 </CardContent>
