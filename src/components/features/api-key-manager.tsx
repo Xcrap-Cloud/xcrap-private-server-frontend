@@ -52,7 +52,7 @@ const ApiKeyManager: FC<Props> = ({ className, apiKey, onRegenerate }) => {
 
     return (
         <div className={cn("space-y-2", className)}>
-            <Label htmlFor="api-key">Sua Chave API</Label>
+            <Label htmlFor="api-key">Chave de API</Label>
             <div className="flex gap-2">
                 <div className="relative flex-1">
                     <Input id="api-key" type="text" value={displayValue} readOnly className="font-mono text-sm pr-10" />

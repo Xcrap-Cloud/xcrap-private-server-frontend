@@ -1,6 +1,12 @@
 import { CreateClientDto } from "../../dto/clients/create-client"
 import { api } from "."
 
+interface Owner {
+    id: string
+    name: string
+    username: string
+}
+
 interface CreateClientResponse {
     id: string
     createdAt: string
@@ -9,6 +15,7 @@ interface CreateClientResponse {
     type: string
     description: string | null
     ownerId: string
+    owner: Owner
 }
 
 export async function createClient(data: CreateClientDto, accessToken: string) {
@@ -17,6 +24,8 @@ export async function createClient(data: CreateClientDto, accessToken: string) {
             Authorization: `Bearer ${accessToken}`,
         },
     })
+
+    return response.data
 }
 
 interface FindOneClientResponse {
@@ -27,6 +36,7 @@ interface FindOneClientResponse {
     type: string
     description: string
     ownerId: string
+    owner: Owner
 }
 
 export async function findOneClient(id: string, accessToken: string) {
@@ -53,11 +63,6 @@ interface FindManyClientItem {
     description: string | null
     ownerId: string
     owner: Owner
-}
-
-interface Owner {
-    id: string
-    name: string
 }
 
 interface Meta {
@@ -94,6 +99,7 @@ interface UpdateClientResponse {
     type: string
     description: string | null
     ownerId: string
+    owner: Owner
 }
 
 export async function updateClient(id: string, data: CreateClientDto, accessToken: string) {

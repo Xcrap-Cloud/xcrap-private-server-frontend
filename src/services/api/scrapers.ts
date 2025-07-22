@@ -2,6 +2,18 @@ import { UpdateScraperDto } from "../../dto/scrapers/update-scraper"
 import { CreateScraperDto } from "../../dto/scrapers/create-scraper"
 import { api } from "."
 
+interface Owner {
+    id: string
+    name: string
+    username: string
+}
+
+interface Client {
+    id: string
+    name: string
+    type: string
+}
+
 interface CreateScraperResponse {
     id: string
     createdAt: string
@@ -10,7 +22,9 @@ interface CreateScraperResponse {
     defaultUrl: string | null
     description: string | null
     ownerId: string
+    owner: Owner
     clientId: string
+    client: Client
     parsingModel: ParsingModel
 }
 
@@ -24,7 +38,7 @@ export async function createScraper(data: CreateScraperDto, accessToken: string)
     return response.data
 }
 
-interface FindOneScraperResponse {
+export interface FindOneScraperResponse {
     id: string
     createdAt: string
     updatedAt: string
@@ -32,7 +46,9 @@ interface FindOneScraperResponse {
     defaultUrl: string | null
     description: string | null
     ownerId: string
+    owner: Owner
     clientId: string
+    client: Client
     parsingModel: ParsingModel
 }
 
@@ -75,7 +91,9 @@ interface UpdateScraperResponse {
     defaultUrl: string | null
     description: string | null
     ownerId: string
+    owner: Owner
     clientId: string
+    client: Client
     parsingModel: ParsingModel
 }
 
@@ -97,7 +115,7 @@ export async function deleteScraper(id: string, accessToken: string) {
     })
 }
 
-interface FindManyScrapersResponse {
+export interface FindManyScrapersResponse {
     data: FindManyScraperItem[]
     meta: Meta
 }
@@ -110,7 +128,9 @@ interface FindManyScraperItem {
     defaultUrl: string
     description: string
     ownerId: string
+    owner: Owner
     clientId: string
+    client: Client
     parsingModel: ParsingModel
 }
 
@@ -128,7 +148,7 @@ interface PaginateOptions {
     perPage?: number
 }
 
-export async function findManyScrapers({ page, perPage }: PaginateOptions, accessToken: string) {
+export async function findManyScrapers({ page, perPage }: PaginateOptions = {}, accessToken: string) {
     const response = await api.get<FindManyScrapersResponse>("/scrapers", {
         headers: {
             Authorization: `Bearer ${accessToken}`,

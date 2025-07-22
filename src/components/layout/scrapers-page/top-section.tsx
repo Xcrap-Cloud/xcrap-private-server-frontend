@@ -6,7 +6,7 @@ type Props = {}
 
 const ScrapersPageTopSection: FC<Props> = ({}) => {
     return (
-        <section>
+        <section className="pb-4">
             <Typography.H1>Scrapers</Typography.H1>
             <Typography.Muted className="mt-4 text-sm">
                 Esta é a listagem dos Scrapers criados, você também pode navegar para a página de cada Scraper ou criar
