@@ -9,14 +9,15 @@ import { toast } from "sonner"
 
 import { executeOneScraper, ExecuteOneScraperResponse, FindOneScraperResponse } from "@/services/api/scrapers"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import ScraperExecutionDialog from "@/components/features/scraper-execution-dialog"
+import ScraperExecutionDialog from "@/components/features/scraper-page/scraper-execution-dialog"
+import ScraperDropdownMenu from "@/components/features/scraper-page/scraper-dropdown-menu"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import ExecutionOutputTab from "./scraper-section-tabs/execution-output-tab"
+import ScraperBasicInfoTab from "./scraper-section-tabs/basic-info-tab"
+import ParsingModelTab from "./scraper-section-tabs/parsing-model-tab"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Typography } from "@/components/ui/typography"
-import ExecutionOutputTab from "./execution-output-tab"
 import { Separator } from "@/components/ui/separator"
-import ScraperBasicInfoTab from "./basic-info-tab"
-import ParsingModelTab from "./parsing-model-tab"
 import { Button } from "@/components/ui/button"
 import Spinner from "@/components/ui/spinner"
 import { Link } from "@/components/ui/link"
@@ -31,7 +32,6 @@ const ScraperPageSection: FC<Props> = ({ data, accessToken }) => {
     const searchParams = useSearchParams()
     const [executionResponse, setExecutionResponse] = useState<ExecuteOneScraperResponse<any> | null>(null)
     const [isExecuting, setIsExecuting] = useState(false)
-
     const tab = searchParams.get("tab") || "basic-info"
 
     const handleTabChange = (newTab: string) => {
@@ -50,6 +50,7 @@ const ScraperPageSection: FC<Props> = ({ data, accessToken }) => {
             return
         }
 
+        setExecutionResponse(null)
         handleTabChange("execution-output")
         setIsExecuting(true)
 
@@ -75,15 +76,18 @@ const ScraperPageSection: FC<Props> = ({ data, accessToken }) => {
                         <div className="space-x-1">
                             <ScraperExecutionDialog
                                 sholdProvideUrl={data.defaultUrl ? false : true}
+                                disabled={isExecuting}
                                 onExecute={handleExecute}
                             >
-                                <Button variant="ghost" className="rounded-full" title="Executar">
+                                <Button className="rounded-full" variant="ghost" title="Executar">
                                     {isExecuting ? <Spinner /> : <LuPlay />}
                                 </Button>
                             </ScraperExecutionDialog>
-                            <Button variant="ghost" className="rounded-full" title="Abrir menu">
-                                <HiDotsVertical />
-                            </Button>
+                            <ScraperDropdownMenu>
+                                <Button className="rounded-full" variant="ghost" title="Abrir menu">
+                                    <HiDotsVertical />
+                                </Button>
+                            </ScraperDropdownMenu>
                         </div>
                     </CardTitle>
                     {data.description && <CardDescription>{data.description}</CardDescription>}
@@ -91,22 +95,22 @@ const ScraperPageSection: FC<Props> = ({ data, accessToken }) => {
                 <CardContent>
                     <Tabs value={tab} onValueChange={handleTabChange}>
                         <TabsList className="mb-4">
-                            <TabsTrigger value="basic-info">
+                            <TabsTrigger disabled={isExecuting} value="basic-info">
                                 <LuInfo /> Informações Básicas
                             </TabsTrigger>
-                            <TabsTrigger value="parsing-model">
+                            <TabsTrigger disabled={isExecuting} value="parsing-model">
                                 <LuBraces /> Modelo de Parsing
                             </TabsTrigger>
                             <TabsTrigger value="execution-output">
                                 <LuFileJson2 /> Saída de Execução
                             </TabsTrigger>
-                            <TabsTrigger value="api">
+                            <TabsTrigger disabled={isExecuting} value="api">
                                 <LuUnplug /> API
                             </TabsTrigger>
                         </TabsList>
                         <ScraperBasicInfoTab data={data} />
                         <ParsingModelTab data={data} />
-                        <ExecutionOutputTab response={executionResponse} scraper={data}/>
+                        <ExecutionOutputTab response={executionResponse} scraper={data} />
                         <TabsContent value="api">API</TabsContent>
                     </Tabs>
                 </CardContent>

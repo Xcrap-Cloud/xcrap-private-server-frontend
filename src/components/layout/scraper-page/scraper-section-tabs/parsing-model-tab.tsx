@@ -4,11 +4,11 @@ import { LuDownload } from "react-icons/lu"
 import download from "downloadjs"
 import { FC } from "react"
 
-import { ParsingModelViewer } from "@/components/features/parsing-model-view"
+import { ParsingModelViewer } from "@/components/features/scraper-page/parsing-model-view"
 import { FindOneScraperResponse } from "@/services/api/scrapers"
 import { Separator } from "@/components/ui/separator"
+import { Typography } from "../../../ui/typography"
 import { TabsContent } from "@/components/ui/tabs"
-import { Typography } from "../../ui/typography"
 import { Button } from "@/components/ui/button"
 
 type Props = {

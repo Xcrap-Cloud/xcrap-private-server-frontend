@@ -16,7 +16,7 @@ const ScraperPage = async ({ params: paramsPromise }: Props) => {
     const scraper = await findOneScraper(params.id, accessToken)
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto py-6">
             <ScraperPageSection data={scraper} accessToken={accessToken} />
         </div>
     )

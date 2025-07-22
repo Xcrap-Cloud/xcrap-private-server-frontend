@@ -17,9 +17,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../ui/form"
+import { Button } from "../../ui/button"
+import { Input } from "../../ui/input"
 
 type BaseProps = {
     children: React.ReactNode
@@ -27,11 +27,13 @@ type BaseProps = {
 
 type WithUrl = BaseProps & {
     sholdProvideUrl: true
+    disabled?: boolean
     onExecute: (url: string) => void
 }
 
 type WithoutUrl = BaseProps & {
     sholdProvideUrl?: false | undefined
+    disabled?: boolean
     onExecute: (url?: string | undefined) => void
 }
 
@@ -47,7 +49,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-const ScraperExecutionDialog: FC<Props> = ({ children, onExecute, sholdProvideUrl }) => {
+const ScraperExecutionDialog: FC<Props> = ({ children, onExecute, sholdProvideUrl, disabled }) => {
     const [open, setOpen] = useState(false)
 
     const form = useForm<FormValues>({
@@ -76,7 +78,9 @@ const ScraperExecutionDialog: FC<Props> = ({ children, onExecute, sholdProvideUr
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>{children}</DialogTrigger>
+            <DialogTrigger disabled={disabled} asChild>
+                {children}
+            </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Execução de Scraper</DialogTitle>
@@ -102,7 +106,7 @@ const ScraperExecutionDialog: FC<Props> = ({ children, onExecute, sholdProvideUr
                             )}
                         />
                         <DialogFooter>
-                            <DialogClose>
+                            <DialogClose asChild>
                                 <Button variant="secondary">Cancelar</Button>
                             </DialogClose>
                             <Button type="submit">

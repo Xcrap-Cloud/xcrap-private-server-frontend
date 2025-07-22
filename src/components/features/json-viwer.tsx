@@ -1,13 +1,14 @@
 "use client"
 
-import { ChevronRight, ChevronDown } from "lucide-react"
+import { LuChevronRight, LuChevronDown } from "react-icons/lu"
 import { BsCopy, BsDownload } from "react-icons/bs"
 import { useState } from "react"
 import { toast } from "sonner"
 
+import download from "downloadjs"
+
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
-import download from "downloadjs"
 
 type Props = {
     data: any
@@ -24,12 +25,14 @@ export default function JsonViewer({ data, initialExpanded = false, fileName }: 
     const keysLength = Object.keys(data).length
 
     const toggleExpand = (key: string) => {
-        setExpanded(prev => ({ ...prev, [key]: !prev[key] }))
+        setExpanded((prev) => ({ ...prev, [key]: !prev[key] }))
     }
 
     const generateRandomFilename = () => {
         const timestamp = new Date().getTime()
-        const randomSuffix = Math.floor(Math.random() * 1000000).toString().padStart(6, "0")
+        const randomSuffix = Math.floor(Math.random() * 1000000)
+            .toString()
+            .padStart(6, "0")
         return `xcrap-export-${timestamp}-${randomSuffix}.json`
     }
 
@@ -60,7 +63,11 @@ export default function JsonViewer({ data, initialExpanded = false, fileName }: 
                         className="p-0 h-auto font-mono px-2 py-1"
                         onClick={() => toggleExpand(currentPath)}
                     >
-                        {isExpanded ? <ChevronDown className="h-4 w-4 mr-1" /> : <ChevronRight className="h-4 w-4 mr-1" />}
+                        {isExpanded ? (
+                            <LuChevronDown className="h-4 w-4 mr-1" />
+                        ) : (
+                            <LuChevronRight className="h-4 w-4 mr-1" />
+                        )}
                         Array[{value.length}]
                     </Button>
                     {isExpanded && (
@@ -83,7 +90,11 @@ export default function JsonViewer({ data, initialExpanded = false, fileName }: 
                         className="p-0 h-auto font-mono px-2 py-1"
                         onClick={() => toggleExpand(currentPath)}
                     >
-                        {isExpanded ? <ChevronDown className="h-4 w-4 mr-1" /> : <ChevronRight className="h-4 w-4 mr-1" />}
+                        {isExpanded ? (
+                            <LuChevronDown className="h-4 w-4 mr-1" />
+                        ) : (
+                            <LuChevronRight className="h-4 w-4 mr-1" />
+                        )}
                         Object
                     </Button>
                     {isExpanded && (
@@ -112,7 +123,7 @@ export default function JsonViewer({ data, initialExpanded = false, fileName }: 
                     variant="secondary"
                     size="xs"
                 >
-                    <BsDownload/>
+                    <BsDownload />
                     <span>Baixar JSON</span>
                 </Button>
                 <Button
@@ -121,12 +132,14 @@ export default function JsonViewer({ data, initialExpanded = false, fileName }: 
                     variant="secondary"
                     size="xs"
                 >
-                    <BsCopy/>
+                    <BsCopy />
                     <span>Copiar JSON</span>
                 </Button>
-                <span className="text-neutral-400 ml-2 text-sm">({keysLength} {keysLength === 1 ? "key" : "keys"})</span>
+                <span className="text-neutral-400 ml-2 text-sm">
+                    ({keysLength} {keysLength === 1 ? "key" : "keys"})
+                </span>
             </div>
-            <Separator className="my-2"/>
+            <Separator className="my-2" />
             {renderValue(data, "root", "")}
         </div>
     )
