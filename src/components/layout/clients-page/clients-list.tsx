@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation"
 import { FC, useState, useTransition } from "react"
 import { LuGlobe } from "react-icons/lu"
+import NextLink from "next/link"
 
 import {
     Pagination,
@@ -16,6 +17,7 @@ import {
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { findManyClients, FindManyClientsResponse } from "@/services/api/clients"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { renderClientType } from "@/utils/render-client-type"
 import formatDateTime from "@/utils/format-date-time"
 
 type Props = {
@@ -34,22 +36,23 @@ const ClientsListSection: FC<Props> = ({ initialData, accessToken }) => {
     const hasNextPage = currentPage < lastPage
     const hasPreviousPage = currentPage > 1
 
-    const handlePageChange = async (page: number) => {
+    const handlePageChange = (page: number) => {
         if (page === currentPage || page < 1 || page > lastPage) return
 
-        startTransition(async () => {
-            try {
-                const params = new URLSearchParams(searchParams.toString())
+        startTransition(() => {
+            const fetchNewData = async () => {
+                try {
+                    const params = new URLSearchParams(searchParams.toString())
+                    params.set("page", page.toString())
+                    router.push(`?${params.toString()}`)
 
-                params.set("page", page.toString())
-                router.push(`?${params.toString()}`)
-
-                const newData = await findManyClients({ page }, accessToken)
-
-                setData(newData)
-            } catch (error) {
-                console.error("Erro ao carregar página:", error)
+                    const newData = await findManyClients({ page }, accessToken)
+                    setData(newData)
+                } catch (error) {
+                    console.error("Erro ao carregar página:", error)
+                }
             }
+            fetchNewData()
         })
     }
 
@@ -165,21 +168,33 @@ const ClientsListSection: FC<Props> = ({ initialData, accessToken }) => {
                             </TableCaption>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-[100px]">Nome</TableHead>
-                                    <TableHead className="text-right">Criado em</TableHead>
-                                    <TableHead className="text-right">Atualizado em</TableHead>
+                                    <TableHead>Nome</TableHead>
+                                    <TableHead>Tipo</TableHead>
+                                    <TableHead>Criado em</TableHead>
+                                    <TableHead>Atualizado em</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {data.data.map((client) => (
-                                    <TableRow
-                                        className="cursor-pointer hover:bg-muted transition-colors"
-                                        onClick={() => router.push(`/clients/${client.id}`)}
-                                        key={client.id}
-                                    >
-                                        <TableCell className="font-medium">{client.name}</TableCell>
-                                        <TableCell className="text-right">{formatDateTime(client.createdAt)}</TableCell>
-                                        <TableCell className="text-right">{formatDateTime(client.updatedAt)}</TableCell>
+                                    <TableRow className="hover:bg-muted transition-colors" key={client.id}>
+                                        <TableCell>
+                                            <NextLink href={`/clients/${client.id}`}>{client.name}</NextLink>
+                                        </TableCell>
+                                        <TableCell>
+                                            <NextLink href={`/clients/${client.id}`}>
+                                                {renderClientType(client.type)}
+                                            </NextLink>
+                                        </TableCell>
+                                        <TableCell>
+                                            <NextLink href={`/clients/${client.id}`}>
+                                                {formatDateTime(client.createdAt)}
+                                            </NextLink>
+                                        </TableCell>
+                                        <TableCell>
+                                            <NextLink href={`/clients/${client.id}`}>
+                                                {formatDateTime(client.updatedAt)}
+                                            </NextLink>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

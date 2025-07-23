@@ -1,6 +1,5 @@
-import { FC } from "react"
-
 import { LuDatabase, LuInfo } from "react-icons/lu"
+import { FC } from "react"
 
 import { ExecuteOneScraperResponse, FindOneScraperResponse } from "@/services/api/scrapers"
 import formatDateTime from "@/components/../utils/format-date-time"
@@ -9,13 +8,14 @@ import { Typography } from "@/components/ui/typography"
 import { Separator } from "@/components/ui/separator"
 import { TabsContent } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label"
+import { Link } from "../../../ui/link"
 
 type Props = {
     scraper: FindOneScraperResponse
     response: ExecuteOneScraperResponse<any> | null
 }
 
-const ExecutionOutputTab: FC<Props> = ({ response, scraper }) => {
+const ScraperExecutionOutputTab: FC<Props> = ({ response, scraper }) => {
     return (
         <TabsContent value="execution-output">
             {response ? (
@@ -29,7 +29,9 @@ const ExecutionOutputTab: FC<Props> = ({ response, scraper }) => {
                         <div className="grid grid-cols-2 gap-x-2 gap-y-6">
                             <div className="space-y-4">
                                 <Label>URL</Label>
-                                <Typography.Muted className="text-sm">{response.metadata.request.url}</Typography.Muted>
+                                <Link href={response.metadata.request.url} target="_blank" className="text-sm">
+                                    {response.metadata.request.url}
+                                </Link>
                             </div>
                             <div className="space-y-4">
                                 <Label>Início</Label>
@@ -119,4 +121,4 @@ const ExecutionOutputTab: FC<Props> = ({ response, scraper }) => {
     )
 }
 
-export default ExecutionOutputTab
+export default ScraperExecutionOutputTab

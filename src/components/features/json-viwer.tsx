@@ -101,7 +101,7 @@ export default function JsonViewer({ data, initialExpanded = false, fileName }: 
                         <div className="ml-4 border-l-2 border-neutral-300 dark:border-neutral-600 pl-2">
                             {Object.entries(value).map(([k, v]) => (
                                 <div key={k} className="my-1 flex gap-1">
-                                    <span className="font-mono text-blue-600">{k}: </span>
+                                    <span className="font-mono text-[#4cb8b4] dark:text-[#5bd6d2]">{k}: </span>
                                     {renderValue(v, k, currentPath)}
                                 </div>
                             ))}

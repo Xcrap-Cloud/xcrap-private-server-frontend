@@ -48,7 +48,6 @@ export interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement>
 const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     ({ className, variant, size, underline, href, showExternalIcon = true, children, ...props }, ref) => {
         const isExternal = href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("tel:")
-        console.log(href)
 
         const content = (
             <>

@@ -16,7 +16,7 @@ type Props = {
     data: FindOneScraperResponse
 }
 
-const ParsingModelTab: FC<Props> = ({ data }) => {
+const ScraperParsingModelTab: FC<Props> = ({ data }) => {
     const handleClickOnDownloadButton = () => {
         const content = JSON.stringify(data.parsingModel, null, 4)
         const fileName = `scraper-${data.id}-parsing-model.json`
@@ -48,4 +48,4 @@ const ParsingModelTab: FC<Props> = ({ data }) => {
     )
 }
 
-export default ParsingModelTab
+export default ScraperParsingModelTab

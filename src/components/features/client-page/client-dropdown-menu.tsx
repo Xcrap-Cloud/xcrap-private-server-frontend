@@ -1,6 +1,6 @@
 "use client"
 
-import { LuBraces, LuCopy, LuPencil, LuTrash } from "react-icons/lu"
+import { LuCopy, LuPencil, LuTrash } from "react-icons/lu"
 import { toast } from "sonner"
 import { FC } from "react"
 
@@ -14,15 +14,15 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { deleteScraper, FindOneScraperResponse } from "@/services/api/scrapers"
+import { deleteClient, FindOneClientResponse } from "@/services/api/clients"
 
 type Props = {
     children: React.ReactNode
-    data: FindOneScraperResponse
+    data: FindOneClientResponse
     accessToken: string
 }
 
-const ScraperDropdownMenu: FC<Props> = ({ children, data, accessToken }) => {
+const ClientDropdownMenu: FC<Props> = ({ children, data, accessToken }) => {
     const router = useRouter()
 
     const handleClickOnCopyIdButton = async () => {
@@ -32,10 +32,10 @@ const ScraperDropdownMenu: FC<Props> = ({ children, data, accessToken }) => {
 
     const handleClickOnDeleteButton = async () => {
         try {
-            await deleteScraper(data.id, accessToken)
+            await deleteClient(data.id, accessToken)
             toast.success(`O cliente "${data.name}" foi excluido com sucesso!`)
 
-            router.push("/scrapers")
+            router.push("/clients")
         } catch (error) {
             console.error("Error when deleting client:", error)
             toast.error("Não foi possível excluir o cliente!")
@@ -54,15 +54,12 @@ const ScraperDropdownMenu: FC<Props> = ({ children, data, accessToken }) => {
                 <DropdownMenuItem>
                     <LuPencil /> Editar Informações Básicas
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <LuBraces /> Editar Modelo de Parsing
-                </DropdownMenuItem>
                 <DropdownMenuItem variant="destructive" onClick={handleClickOnDeleteButton}>
-                    <LuTrash /> Excluir Scraper
+                    <LuTrash /> Excluir Cliente
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )
 }
 
-export default ScraperDropdownMenu
+export default ClientDropdownMenu

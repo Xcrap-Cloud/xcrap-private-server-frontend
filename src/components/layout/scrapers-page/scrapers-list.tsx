@@ -2,8 +2,8 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import { FC, useState, useTransition } from "react"
-
 import { FaSpider } from "react-icons/fa"
+import NextLink from "next/link"
 
 import {
     Pagination,
@@ -166,24 +166,26 @@ const ScrapersListSection: FC<Props> = ({ initialData, accessToken }) => {
                             </TableCaption>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-[100px]">Nome</TableHead>
-                                    <TableHead className="text-right">Criado em</TableHead>
-                                    <TableHead className="text-right">Atualizado em</TableHead>
+                                    <TableHead>Nome</TableHead>
+                                    <TableHead>Criado em</TableHead>
+                                    <TableHead>Atualizado em</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {data.data.map((scraper) => (
-                                    <TableRow
-                                        className="cursor-pointer hover:bg-muted transition-colors"
-                                        onClick={() => router.push(`/scrapers/${scraper.id}`)}
-                                        key={scraper.id}
-                                    >
-                                        <TableCell className="font-medium">{scraper.name}</TableCell>
-                                        <TableCell className="text-right">
-                                            {formatDateTime(scraper.createdAt)}
+                                    <TableRow key={scraper.id}>
+                                        <TableCell className="font-medium">
+                                            <NextLink href={`/scrapers/${scraper.id}`}>{scraper.name}</NextLink>
                                         </TableCell>
-                                        <TableCell className="text-right">
-                                            {formatDateTime(scraper.updatedAt)}
+                                        <TableCell>
+                                            <NextLink href={`/scrapers/${scraper.id}`}>
+                                                {formatDateTime(scraper.createdAt)}
+                                            </NextLink>
+                                        </TableCell>
+                                        <TableCell>
+                                            <NextLink href={`/scrapers/${scraper.id}`}>
+                                                {formatDateTime(scraper.updatedAt)}
+                                            </NextLink>
                                         </TableCell>
                                     </TableRow>
                                 ))}

@@ -28,8 +28,6 @@ export const authOptions: NextAuthOptions = {
                         return null
                     }
 
-                    console.log(data)
-
                     if (response) {
                         return {
                             id: id,

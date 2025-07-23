@@ -1,10 +1,8 @@
 import { FC } from "react"
 
-import { Typography } from "../../ui/typography"
+import { Typography } from "@/components/ui/typography"
 
-type Props = {}
-
-const ClientsPageTopSection: FC<Props> = ({}) => {
+const ClientsPageTopSection: FC = () => {
     return (
         <section className="pb-4">
             <Typography.H1>Clientes</Typography.H1>

@@ -11,14 +11,14 @@ import { executeOneScraper, ExecuteOneScraperResponse, FindOneScraperResponse } 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import ScraperExecutionDialog from "@/components/features/scraper-page/scraper-execution-dialog"
 import ScraperDropdownMenu from "@/components/features/scraper-page/scraper-dropdown-menu"
+import ScraperExecutionOutputTab from "./scraper-section-tabs/execution-output-tab"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import ExecutionOutputTab from "./scraper-section-tabs/execution-output-tab"
+import ScraperParsingModelTab from "./scraper-section-tabs/parsing-model-tab"
 import ScraperBasicInfoTab from "./scraper-section-tabs/basic-info-tab"
-import ParsingModelTab from "./scraper-section-tabs/parsing-model-tab"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import ScraperApiTab from "./scraper-section-tabs/api-tab"
 import { Typography } from "@/components/ui/typography"
 import { Separator } from "@/components/ui/separator"
-import ApiTab from "./scraper-section-tabs/api-tab"
 import { Button } from "@/components/ui/button"
 import Spinner from "@/components/ui/spinner"
 import { Link } from "@/components/ui/link"
@@ -84,7 +84,7 @@ const ScraperPageSection: FC<Props> = ({ data, accessToken }) => {
                                     {isExecuting ? <Spinner /> : <LuPlay />}
                                 </Button>
                             </ScraperExecutionDialog>
-                            <ScraperDropdownMenu data={data}>
+                            <ScraperDropdownMenu data={data} accessToken={accessToken}>
                                 <Button className="rounded-full" variant="ghost" title="Abrir menu">
                                     <HiDotsVertical />
                                 </Button>
@@ -110,9 +110,9 @@ const ScraperPageSection: FC<Props> = ({ data, accessToken }) => {
                             </TabsTrigger>
                         </TabsList>
                         <ScraperBasicInfoTab data={data} />
-                        <ParsingModelTab data={data} />
-                        <ExecutionOutputTab response={executionResponse} scraper={data} />
-                        <ApiTab data={data} />
+                        <ScraperParsingModelTab data={data} />
+                        <ScraperExecutionOutputTab response={executionResponse} scraper={data} />
+                        <ScraperApiTab data={data} />
                     </Tabs>
                 </CardContent>
                 <Separator />

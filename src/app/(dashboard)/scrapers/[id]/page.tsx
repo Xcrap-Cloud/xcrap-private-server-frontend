@@ -1,5 +1,3 @@
-import { FC } from "react"
-
 import ScraperPageSection from "@/components/layout/scraper-page/scraper-section"
 import { getAuthenticatedSession } from "@/utils/get-access-token"
 import { findOneScraper } from "@/services/api/scrapers"

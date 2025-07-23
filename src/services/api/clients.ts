@@ -28,7 +28,7 @@ export async function createClient(data: CreateClientDto, accessToken: string) {
     return response.data
 }
 
-interface FindOneClientResponse {
+export interface FindOneClientResponse {
     id: string
     createdAt: string
     updatedAt: string

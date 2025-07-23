@@ -1,41 +1,36 @@
 import { FC } from "react"
 
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { FindOneScraperResponse } from "@/services/api/scrapers"
+import { FindOneClientResponse } from "@/services/api/clients"
 import { TabsContent } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import configHelper from "@/helpers/config"
 
 type Props = {
-    data: FindOneScraperResponse
+    data: FindOneClientResponse
 }
 
 const routes = [
     {
         method: "GET",
-        description: "Obter Informações - Retorna informações detalhadas sobre o scraper especificado.",
+        description: "Obter Informações - Retorna informações detalhadas sobre o cliente especificado.",
     },
     {
         method: "PATCH",
-        description: "Atualizar Informações - Atualiza as informações do scraper especificado.",
+        description: "Atualizar Informações - Atualiza as informações do cliente especificado.",
     },
     {
         method: "DELETE",
-        description: "Excluir Scraper - Remove o scraper especificado do sistema.",
-    },
-    {
-        method: "POST",
-        path: "execute",
-        description: "Executar Scraper - Inicia a execução do scraper especificado e retorna o resultado.",
+        description: "Excluir Cliente - Remove o client especificado do sistema.",
     },
 ]
 
-const ScraperApiTab: FC<Props> = ({ data }) => {
+const ClientApiTab: FC<Props> = ({ data }) => {
     return (
         <TabsContent value="api">
             <Table>
                 <TableCaption>
-                    Rotas da API relacionadas ao Scraper <b>{data.name}</b>.
+                    Rotas da API relacionadas ao Cliente <b>{data.name}</b>.
                 </TableCaption>
                 <TableHeader>
                     <TableRow>
@@ -51,7 +46,7 @@ const ScraperApiTab: FC<Props> = ({ data }) => {
                                 <Badge>{route.method}</Badge>
                             </TableCell>
                             <TableCell>
-                                {configHelper.apiUrl}/scrapers/{data.id}/{route.path && route.path}
+                                {configHelper.apiUrl}/clients/{data.id}
                             </TableCell>
                             <TableCell>{route.description}</TableCell>
                         </TableRow>
@@ -62,4 +57,4 @@ const ScraperApiTab: FC<Props> = ({ data }) => {
     )
 }
 
-export default ScraperApiTab
+export default ClientApiTab

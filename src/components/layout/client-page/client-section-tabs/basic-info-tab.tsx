@@ -1,17 +1,17 @@
 import { FC } from "react"
 
-import { FindOneScraperResponse } from "@/services/api/scrapers"
+import { FindOneClientResponse } from "@/services/api/clients"
+import { renderClientType } from "@/utils/render-client-type"
 import { Typography } from "@/components/ui/typography"
 import formatDateTime from "@/utils/format-date-time"
 import { TabsContent } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label"
-import { Link } from "@/components/ui/link"
 
 type Props = {
-    data: FindOneScraperResponse
+    data: FindOneClientResponse
 }
 
-const ScraperBasicInfoTab: FC<Props> = ({ data }) => {
+const ClientBasicInfoTab: FC<Props> = ({ data }) => {
     return (
         <TabsContent value="basic-info" className="grid grid-cols-2 gap-x-2 gap-y-6">
             <div className="space-y-4">
@@ -23,20 +23,8 @@ const ScraperBasicInfoTab: FC<Props> = ({ data }) => {
                 <Typography.Muted className="text-sm">{formatDateTime(data.updatedAt)}</Typography.Muted>
             </div>
             <div className="space-y-4">
-                <Label>URL Padrão</Label>
-                {data.defaultUrl ? (
-                    <Link href={data.defaultUrl} className="text-sm">
-                        {data.defaultUrl}
-                    </Link>
-                ) : (
-                    <Typography.Muted className="text-sm">Não definida.</Typography.Muted>
-                )}
-            </div>
-            <div className="space-y-4">
-                <Label>Cliente</Label>
-                <Link href={`/clients/${data.clientId}`} target="_blank" className="text-sm">
-                    {data.client.name}
-                </Link>
+                <Label>Tipo</Label>
+                {renderClientType(data.type)}
             </div>
             <div className="space-y-4">
                 <Label>ID</Label>
@@ -46,4 +34,4 @@ const ScraperBasicInfoTab: FC<Props> = ({ data }) => {
     )
 }
 
-export default ScraperBasicInfoTab
+export default ClientBasicInfoTab

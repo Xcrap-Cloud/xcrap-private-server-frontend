@@ -1,8 +1,6 @@
-import { FC } from "react"
-
-import ScraperPageSection from "@/components/layout/scraper-page/scraper-section"
+import ClientPageSection from "@/components/layout/client-page/client-section"
 import { getAuthenticatedSession } from "@/utils/get-access-token"
-import { findOneScraper } from "@/services/api/scrapers"
+import { findOneClient } from "@/services/api/clients"
 
 type Props = {
     params: Promise<{
@@ -10,16 +8,16 @@ type Props = {
     }>
 }
 
-const ScraperPage = async ({ params: paramsPromise }: Props) => {
+const ClientPage = async ({ params: paramsPromise }: Props) => {
     const params = await paramsPromise
     const { accessToken } = await getAuthenticatedSession()
-    const scraper = await findOneScraper(params.id, accessToken)
+    const client = await findOneClient(params.id, accessToken)
 
     return (
         <div className="max-w-7xl mx-auto py-6">
-            <ScraperPageSection data={scraper} accessToken={accessToken} />
+            <ClientPageSection data={client} accessToken={accessToken} />
         </div>
     )
 }
 
-export default ScraperPage
+export default ClientPage

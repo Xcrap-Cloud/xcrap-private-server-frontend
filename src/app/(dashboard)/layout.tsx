@@ -3,9 +3,9 @@
 import { SessionProvider } from "next-auth/react"
 import { useEffect, useState } from "react"
 
-import { SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar"
-import AppSidebar from "../../components/layout/application/app-sidebar"
-import { ThemeSwitcher } from "../../components/features/theme-switcher"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import AppSidebar from "@/components/layout/application/app-sidebar"
+import { ThemeSwitcher } from "@/components/features/theme-switcher"
 
 export default function DashboardLayout({
     children,
