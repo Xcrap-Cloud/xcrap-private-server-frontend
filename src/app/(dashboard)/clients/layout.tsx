@@ -9,8 +9,8 @@ type Props = {
     children: ReactNode
 }
 
-const ScrapersLayout: FC<Props> = ({ children }) => {
+const ClientsLayout: FC<Props> = ({ children }) => {
     return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 }
 
-export default ScrapersLayout
+export default ClientsLayout

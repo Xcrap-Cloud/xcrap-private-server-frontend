@@ -2,8 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import { FC, useState, useTransition } from "react"
-
-import { FaSpider } from "react-icons/fa"
+import { LuGlobe } from "react-icons/lu"
 
 import {
     Pagination,
@@ -15,16 +14,16 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { findManyScrapers, type FindManyScrapersResponse } from "@/services/api/scrapers"
+import { findManyClients, FindManyClientsResponse } from "@/services/api/clients"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import formatDateTime from "@/utils/format-date-time"
 
 type Props = {
-    initialData: FindManyScrapersResponse
+    initialData: FindManyClientsResponse
     accessToken: string
 }
 
-const ScrapersListSection: FC<Props> = ({ initialData, accessToken }) => {
+const ClientsListSection: FC<Props> = ({ initialData, accessToken }) => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [isPending, startTransition] = useTransition()
@@ -45,7 +44,7 @@ const ScrapersListSection: FC<Props> = ({ initialData, accessToken }) => {
                 params.set("page", page.toString())
                 router.push(`?${params.toString()}`)
 
-                const newData = await findManyScrapers({ page }, accessToken)
+                const newData = await findManyClients({ page }, accessToken)
 
                 setData(newData)
             } catch (error) {
@@ -153,7 +152,7 @@ const ScrapersListSection: FC<Props> = ({ initialData, accessToken }) => {
             <Card>
                 <CardHeader>
                     <CardTitle className="flex gap-1 items-center">
-                        <FaSpider /> Lista de Scrapers
+                        <LuGlobe /> Lista de Clients
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -172,19 +171,15 @@ const ScrapersListSection: FC<Props> = ({ initialData, accessToken }) => {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {data.data.map((scraper) => (
+                                {data.data.map((client) => (
                                     <TableRow
                                         className="cursor-pointer hover:bg-muted transition-colors"
-                                        onClick={() => router.push(`/scrapers/${scraper.id}`)}
-                                        key={scraper.id}
+                                        onClick={() => router.push(`/clients/${client.id}`)}
+                                        key={client.id}
                                     >
-                                        <TableCell className="font-medium">{scraper.name}</TableCell>
-                                        <TableCell className="text-right">
-                                            {formatDateTime(scraper.createdAt)}
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            {formatDateTime(scraper.updatedAt)}
-                                        </TableCell>
+                                        <TableCell className="font-medium">{client.name}</TableCell>
+                                        <TableCell className="text-right">{formatDateTime(client.createdAt)}</TableCell>
+                                        <TableCell className="text-right">{formatDateTime(client.updatedAt)}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -227,4 +222,4 @@ const ScrapersListSection: FC<Props> = ({ initialData, accessToken }) => {
     )
 }
 
-export default ScrapersListSection
+export default ClientsListSection

@@ -49,7 +49,7 @@ export async function findOneClient(id: string, accessToken: string) {
     return response.data
 }
 
-interface FindManyClientsResponse {
+export interface FindManyClientsResponse {
     data: FindManyClientItem[]
     meta: Meta
 }
@@ -79,7 +79,7 @@ interface PaginateOptions {
     perPage?: number
 }
 
-export async function findManyClients({ page, perPage }: PaginateOptions, accessToken: string) {
+export async function findManyClients({ page, perPage }: PaginateOptions = {}, accessToken: string) {
     const response = await api.get<FindManyClientsResponse>("/clients", {
         headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -89,6 +89,8 @@ export async function findManyClients({ page, perPage }: PaginateOptions, access
             perPage,
         },
     })
+
+    return response.data
 }
 
 interface UpdateClientResponse {

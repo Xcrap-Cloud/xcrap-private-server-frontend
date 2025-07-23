@@ -18,6 +18,7 @@ import ParsingModelTab from "./scraper-section-tabs/parsing-model-tab"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Typography } from "@/components/ui/typography"
 import { Separator } from "@/components/ui/separator"
+import ApiTab from "./scraper-section-tabs/api-tab"
 import { Button } from "@/components/ui/button"
 import Spinner from "@/components/ui/spinner"
 import { Link } from "@/components/ui/link"
@@ -83,7 +84,7 @@ const ScraperPageSection: FC<Props> = ({ data, accessToken }) => {
                                     {isExecuting ? <Spinner /> : <LuPlay />}
                                 </Button>
                             </ScraperExecutionDialog>
-                            <ScraperDropdownMenu>
+                            <ScraperDropdownMenu data={data}>
                                 <Button className="rounded-full" variant="ghost" title="Abrir menu">
                                     <HiDotsVertical />
                                 </Button>
@@ -111,7 +112,7 @@ const ScraperPageSection: FC<Props> = ({ data, accessToken }) => {
                         <ScraperBasicInfoTab data={data} />
                         <ParsingModelTab data={data} />
                         <ExecutionOutputTab response={executionResponse} scraper={data} />
-                        <TabsContent value="api">API</TabsContent>
+                        <ApiTab data={data} />
                     </Tabs>
                 </CardContent>
                 <Separator />
