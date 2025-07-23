@@ -21,6 +21,7 @@ import { Typography } from "@/components/ui/typography"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import Spinner from "@/components/ui/spinner"
+import { Badge } from "@/components/ui/badge"
 import { Link } from "@/components/ui/link"
 
 type Props = {
@@ -72,7 +73,12 @@ const ScraperPageSection: FC<Props> = ({ data, accessToken }) => {
                 <CardHeader>
                     <CardTitle className="flex justify-between">
                         <div className="flex gap-2 items-center">
-                            <FaSpider /> {data.name}
+                            <FaSpider /> {data.name}{" "}
+                            {isExecuting && (
+                                <Badge variant="outline" className="opacity-50">
+                                    Executando...
+                                </Badge>
+                            )}
                         </div>
                         <div className="space-x-1">
                             <ScraperExecutionDialog

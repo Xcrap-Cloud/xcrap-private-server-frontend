@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation"
 import { LuGlobe, LuInfo, LuUnplug } from "react-icons/lu"
 import { HiDotsVertical } from "react-icons/hi"
-import { FC, useEffect } from "react"
+import { FC } from "react"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import ClientDropdownMenu from "@/components/features/client-page/client-dropdown-menu"
@@ -34,10 +34,6 @@ const ClientPageSection: FC<Props> = ({ data, accessToken }) => {
 
         router.replace(`?${params.toString()}`, { scroll: false })
     }
-
-    useEffect(() => {
-        console.log("Passou por aqui!")
-    }, [])
 
     return (
         <section>

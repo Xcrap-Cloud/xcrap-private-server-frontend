@@ -1,10 +1,11 @@
 import { SiPuppeteer, SiNodedotjs } from "react-icons/si"
 import { SiAxios } from "react-icons/si"
+import { MdHttp } from "react-icons/md"
 import { ReactNode } from "react"
 
 import { Typography } from "@/components/ui/typography"
 
-export async function renderClientType(type: string) {
+export function renderClientType(type: string) {
     const clientTypeMap: Record<string, ReactNode> = {
         puppeteer: (
             <div className="flex gap-2 items-center">
@@ -32,8 +33,8 @@ export async function renderClientType(type: string) {
         ),
         got_scraping: (
             <div className="flex gap-2 items-center">
-                <SiAxios className="text-[#5A29E4]" />
-                <Typography.Muted className="text-sm">Axios</Typography.Muted>
+                <MdHttp className="text-[#8085BB]" />
+                <Typography.Muted className="text-sm">Got Scraping</Typography.Muted>
             </div>
         ),
         http_core: (
