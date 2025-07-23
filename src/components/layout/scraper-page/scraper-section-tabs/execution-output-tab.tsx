@@ -8,7 +8,7 @@ import { Typography } from "@/components/ui/typography"
 import { Separator } from "@/components/ui/separator"
 import { TabsContent } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label"
-import { Link } from "../../../ui/link"
+import { Link } from "@/components/ui/link"
 
 type Props = {
     scraper: FindOneScraperResponse

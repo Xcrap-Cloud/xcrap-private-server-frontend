@@ -12,7 +12,7 @@ export default function DashboardLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
-    const [defaultOpen, setDefaultOpen] = useState(false)
+    const [defaultOpen, setDefaultOpen] = useState(true)
 
     useEffect(() => {
         const cookieValue = document.cookie

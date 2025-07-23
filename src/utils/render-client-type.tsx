@@ -5,49 +5,45 @@ import { ReactNode } from "react"
 
 import { Typography } from "@/components/ui/typography"
 
-export function renderClientType(type: string) {
-    const clientTypeMap: Record<string, ReactNode> = {
-        puppeteer: (
-            <div className="flex gap-2 items-center">
-                <SiPuppeteer className="text-[#01D8A2]" />
-                <Typography.Muted className="text-sm">Puppeteer</Typography.Muted>
-            </div>
-        ),
-        puppeteer_extra: (
-            <div className="flex gap-2 items-center">
-                <SiPuppeteer className="text-[#E6141F]" />
-                <Typography.Muted className="text-sm">Puppeteer Extra</Typography.Muted>
-            </div>
-        ),
-        puppeteer_real_browser: (
-            <div className="flex gap-2 items-center">
-                <SiPuppeteer className="text-[#303030] dark:text-neutral-100" />
-                <Typography.Muted className="text-sm">Puppeteer Real Browser</Typography.Muted>
-            </div>
-        ),
-        axios: (
-            <div className="flex gap-2 items-center">
-                <SiAxios className="text-[#5A29E4]" />
-                <Typography.Muted className="text-sm">Axios</Typography.Muted>
-            </div>
-        ),
-        got_scraping: (
-            <div className="flex gap-2 items-center">
-                <MdHttp className="text-[#8085BB]" />
-                <Typography.Muted className="text-sm">Got Scraping</Typography.Muted>
-            </div>
-        ),
-        http_core: (
-            <div className="flex gap-2 items-center">
-                <SiNodedotjs className="text-[#73AA63]" />
-                <Typography.Muted className="text-sm">HTTP Core</Typography.Muted>
-            </div>
-        ),
+export function getClientTypeIcon(type: string): ReactNode {
+    const iconMap: Record<string, ReactNode> = {
+        puppeteer: <SiPuppeteer className="text-[#01D8A2]" />,
+        puppeteer_extra: <SiPuppeteer className="text-[#E6141F]" />,
+        puppeteer_real_browser: <SiPuppeteer className="text-[#303030] dark:text-neutral-100" />,
+        axios: <SiAxios className="text-[#5A29E4]" />,
+        got_scraping: <MdHttp className="text-[#8085BB]" />,
+        http_core: <SiNodedotjs className="text-[#73AA63]" />,
     }
 
-    if (!(type in clientTypeMap)) {
-        throw new Error(`Unknown client type: ${type}`)
+    if (!(type in iconMap)) {
+        throw new Error(`Unknown client type icon: ${type}`)
     }
 
-    return clientTypeMap[type]
+    return iconMap[type]
+}
+
+export function getClientTypeName(type: string): string {
+    const nameMap: Record<string, string> = {
+        puppeteer: "Puppeteer",
+        puppeteer_extra: "Puppeteer Extra",
+        puppeteer_real_browser: "Puppeteer Real Browser",
+        axios: "Axios",
+        got_scraping: "Got Scraping",
+        http_core: "HTTP Core",
+    }
+
+    if (!(type in nameMap)) {
+        throw new Error(`Unknown client type name: ${type}`)
+    }
+
+    return nameMap[type]
+}
+
+export function renderClientType(type: string): ReactNode {
+    return (
+        <div className="flex gap-2 items-center">
+            {getClientTypeIcon(type)}
+            <Typography.Muted className="text-sm">{getClientTypeName(type)}</Typography.Muted>
+        </div>
+    )
 }

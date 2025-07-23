@@ -10,9 +10,10 @@ import {
     IsNotEmpty,
 } from "class-validator"
 import { Type } from "class-transformer"
+import "reflect-metadata"
 
-import { IsQueryRequiredIfNested } from "../../decorators/scrapers/is-query-required-if-nested.decorator"
-import { ParsingModelFieldType } from "../../enums/scrapers/parsing-model-field-type"
+import { IsQueryRequiredIfNested } from "@/decorators/scrapers/is-query-required-if-nested.decorator"
+import { ParsingModelFieldType } from "@/enums/scrapers/parsing-model-field-type"
 
 export class CreateParsingModelDto {
     @IsEnum(ParsingModelFieldType)

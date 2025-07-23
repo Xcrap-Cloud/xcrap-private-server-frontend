@@ -1,6 +1,6 @@
 "use client"
 
-import { LuPlug, LuUser } from "react-icons/lu"
+import { LuPencil, LuPlug, LuUser } from "react-icons/lu"
 import { FC, useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import * as jwt from "jsonwebtoken"
@@ -10,12 +10,15 @@ import ApiKeyManager from "@/components/features/account-page/api-key-manager"
 import { findOneUser, FindOneUserResponse } from "@/services/api/users"
 import { Typography } from "@/components/ui/typography"
 import formatDateTime from "@/utils/format-date-time"
+import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 
 const AccountSection: FC = () => {
     const { data: session, status } = useSession()
     const data = session && session.accessToken ? jwt.decode(session.accessToken) : null
     const [user, setUser] = useState<FindOneUserResponse | null>(null)
+
+    const handleClickOnEditButton = () => {}
 
     useEffect(() => {
         if (!data || !session || !session.accessToken) return
@@ -38,10 +41,22 @@ const AccountSection: FC = () => {
                     </Typography.Muted>
                     {user && (
                         <div className="mt-8 space-y-4">
-                            <Card className="max-w-5xl">
+                            <Card>
                                 <CardHeader>
-                                    <CardTitle className="flex gap-1 items-center">
-                                        <LuUser /> Informações do Usuário
+                                    <CardTitle className="flex justify-between items-center">
+                                        <div className="flex gap-1 items-center">
+                                            <LuUser /> Informações do Usuário
+                                        </div>
+                                        <div>
+                                            <Button
+                                                variant="ghost"
+                                                className="rounded-full"
+                                                title="Editar"
+                                                onClick={handleClickOnEditButton}
+                                            >
+                                                <LuPencil />
+                                            </Button>
+                                        </div>
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="grid grid-cols-2 gap-x-2 gap-y-6">
@@ -83,7 +98,7 @@ const AccountSection: FC = () => {
                                     </div>
                                 </CardContent>
                             </Card>
-                            <Card className="max-w-5xl">
+                            <Card>
                                 <CardHeader>
                                     <CardTitle className="flex gap-1 items-center">
                                         <LuPlug /> Integração

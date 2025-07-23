@@ -1,6 +1,6 @@
 import { FC } from "react"
 
-import { Typography } from "../../ui/typography"
+import { Typography } from "@/components/ui/typography"
 
 type Props = {}
 

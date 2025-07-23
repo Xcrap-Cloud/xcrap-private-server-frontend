@@ -1,6 +1,7 @@
 import { IsEnum, IsOptional, IsString } from "class-validator"
+import "reflect-metadata"
 
-import { ClientType } from "../../enums/clients/client-type"
+import { ClientType } from "@/enums/clients/client-type"
 
 export class UpdateClientDto {
     @IsOptional()

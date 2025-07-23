@@ -1,20 +1,17 @@
 import { IsEnum, IsOptional, IsUUID, ValidateNested, IsString, IsBoolean, IsUrl, ValidateIf } from "class-validator"
 import { Type } from "class-transformer"
+import "reflect-metadata"
 
-import { ApiProperty } from "@nestjs/swagger"
-
-import { ClientType } from "@prisma/client"
-
-import { IsQueryRequiredIfNested } from "../decorators/is-query-required-if-nested.decorator"
-import { IsRecordOfParsingField } from "../decorators/is-record-of-parsing-field.decorator"
-import { ParsingModelFieldType } from "../enums/parsing-model-field-type.enum"
+import { IsQueryRequiredIfNested } from "@/decorators/scrapers/is-query-required-if-nested.decorator"
+import { IsRecordOfParsingField } from "@/decorators/scrapers/is-record-of-parsing-field.decorator"
+import { ParsingModelFieldType } from "@/enums/scrapers/parsing-model-field-type"
+import { ClientType } from "../../enums/clients/client-type"
 
 class CreateDynamicModelDto {
     [key: string]: CreateParsingModelFieldDto
 }
 
 export class CreateParsingModelDto {
-    @ApiProperty({ enum: ParsingModelFieldType, enumName: "ParsingModelFieldType" })
     @IsEnum(ParsingModelFieldType)
     type: ParsingModelFieldType
 
@@ -25,7 +22,6 @@ export class CreateParsingModelDto {
 }
 
 export class CreateParsingModelFieldDto {
-    @ApiProperty({ required: false })
     @IsOptional()
     @IsString()
     @IsQueryRequiredIfNested("nested", {
@@ -33,21 +29,17 @@ export class CreateParsingModelFieldDto {
     })
     query?: string
 
-    @ApiProperty({ required: false })
     @IsOptional()
     @IsString()
     extractor?: string
 
-    @ApiProperty({ required: false })
     @IsOptional()
     @IsBoolean()
     multiple?: boolean
 
-    @ApiProperty({ required: false })
     @IsOptional()
     default?: any
 
-    @ApiProperty({ required: false })
     @IsOptional()
     @ValidateNested()
     @Type(() => CreateParsingModelDto)
@@ -55,19 +47,16 @@ export class CreateParsingModelFieldDto {
 }
 
 export class CreateRequestConfigDto {
-    @ApiProperty({ required: false })
     @IsOptional()
     @IsString()
     method?: string
 
-    @ApiProperty({ required: false })
     @IsOptional()
     @IsString()
     userAgent?: string
 }
 
 export class DynamicClientDto {
-    @ApiProperty({ enum: ClientType, enumName: "ClientType" })
     @IsEnum(ClientType)
     type: ClientType
 }
@@ -76,14 +65,12 @@ export class ExecuteOneDynamicScraperDto {
     @IsUrl()
     url: string
 
-    @ApiProperty({ required: false })
     @ValidateIf((object) => object.client === undefined || object.client === null, {
         message: "Client ID is required if Client is not provided.",
     })
     @IsUUID()
     clientId?: string
 
-    @ApiProperty({ required: false })
     @ValidateIf((object) => object.clientId === undefined || object.clientId === null, {
         message: "Client is required if clientId is not provided.",
     })
@@ -91,13 +78,11 @@ export class ExecuteOneDynamicScraperDto {
     @Type(() => DynamicClientDto)
     client?: DynamicClientDto
 
-    @ApiProperty({ required: false })
     @IsOptional()
     @ValidateNested()
     @Type(() => CreateParsingModelDto)
     parsingModel?: CreateParsingModelDto
 
-    @ApiProperty({ required: false })
     @IsOptional()
     @ValidateNested()
     @Type(() => CreateRequestConfigDto)

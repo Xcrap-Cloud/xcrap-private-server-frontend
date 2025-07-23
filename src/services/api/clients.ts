@@ -54,7 +54,7 @@ export interface FindManyClientsResponse {
     meta: Meta
 }
 
-interface FindManyClientItem {
+export interface FindManyClientItem {
     id: string
     createdAt: string
     updatedAt: string
