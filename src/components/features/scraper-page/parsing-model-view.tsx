@@ -1,11 +1,10 @@
 "use client"
 
 import { ChevronDown, ChevronRight, Code, Layers, Brackets } from "lucide-react"
-import { SiJson, SiHtml5, SiMarkdown } from "react-icons/si"
 import { useState } from "react"
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { ParsingModelFieldType } from "@/enums/scrapers/parsing-model-field-type"
+import { getParsingModelTypeIcon } from "@/utils/get-parsing-model-type-icon"
 import { ParsingModel } from "@/services/api/scrapers"
 import { Badge } from "@/components/ui/badge"
 
@@ -28,19 +27,6 @@ export function ParsingModelViewer({ parsingModel }: ParsingModelViewerProps) {
         setExpandedNodes(newExpanded)
     }
 
-    const getTypeIcon = (type: string) => {
-        switch (type) {
-            case ParsingModelFieldType.HTML:
-                return <SiHtml5 className="w-4 h-4 text-orange-600" />
-            case ParsingModelFieldType.JSON:
-                return <SiJson className="w-4 h-4 text-neutral-600" />
-            case ParsingModelFieldType.MARKDOWN:
-                return <SiMarkdown className="w-4 h-4 text-[#1A9FE6]" />
-            default:
-                return <Code className="w-4 h-4 text-neutral-600" />
-        }
-    }
-
     return (
         <div className="font-mono text-sm">
             <ModelNode
@@ -48,7 +34,6 @@ export function ParsingModelViewer({ parsingModel }: ParsingModelViewerProps) {
                 nodeId="root"
                 expandedNodes={expandedNodes}
                 onToggle={toggleNode}
-                getTypeIcon={getTypeIcon}
                 level={0}
             />
         </div>
@@ -60,12 +45,11 @@ interface ModelNodeProps {
     nodeId: string
     expandedNodes: Set<string>
     onToggle: (nodeId: string) => void
-    getTypeIcon: (type: string) => React.ReactNode
     level: number
     fieldName?: string
 }
 
-function ModelNode({ model, nodeId, expandedNodes, onToggle, getTypeIcon, level, fieldName }: ModelNodeProps) {
+function ModelNode({ model, nodeId, expandedNodes, onToggle, level, fieldName }: ModelNodeProps) {
     const isExpanded = expandedNodes.has(nodeId)
     const hasFields = Object.keys(model.model).length > 0
 
@@ -84,7 +68,7 @@ function ModelNode({ model, nodeId, expandedNodes, onToggle, getTypeIcon, level,
                             ) : (
                                 <div className="w-4 h-4" />
                             )}
-                            {getTypeIcon(model.type)}
+                            {getParsingModelTypeIcon(model.type)}
                         </div>
                         <div className="flex items-center gap-2">
                             {fieldName ? (
@@ -110,7 +94,6 @@ function ModelNode({ model, nodeId, expandedNodes, onToggle, getTypeIcon, level,
                                 nodeId={`${nodeId}.${fieldName}`}
                                 expandedNodes={expandedNodes}
                                 onToggle={onToggle}
-                                getTypeIcon={getTypeIcon}
                                 level={level + 1}
                             />
                         ))}
@@ -133,11 +116,10 @@ interface FieldNodeProps {
     nodeId: string
     expandedNodes: Set<string>
     onToggle: (nodeId: string) => void
-    getTypeIcon: (type: string) => React.ReactNode
     level: number
 }
 
-function FieldNode({ fieldName, field, nodeId, expandedNodes, onToggle, getTypeIcon, level }: FieldNodeProps) {
+function FieldNode({ fieldName, field, nodeId, expandedNodes, onToggle, level }: FieldNodeProps) {
     const isExpanded = expandedNodes.has(nodeId)
     const hasNested = !!field.nested
     const hasDetails = field.query || field.extractor || field.default !== undefined
@@ -216,7 +198,6 @@ function FieldNode({ fieldName, field, nodeId, expandedNodes, onToggle, getTypeI
                                 nodeId={`${nodeId}.nested`}
                                 expandedNodes={expandedNodes}
                                 onToggle={onToggle}
-                                getTypeIcon={getTypeIcon}
                                 level={level + 1}
                                 fieldName="nested"
                             />

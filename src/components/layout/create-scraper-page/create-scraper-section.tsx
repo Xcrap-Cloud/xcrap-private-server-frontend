@@ -12,7 +12,7 @@ const CreateScraperSection: FC<Props> = ({ accessToken }) => {
         <section>
             <Card>
                 <CardHeader>
-                    <CardTitle>Criação de Scraper HTTP</CardTitle>
+                    <CardTitle>Criação de Scraper</CardTitle>
                     <CardDescription>Preencha os dados abaixo para criar um novo scraper.</CardDescription>
                 </CardHeader>
                 <CardContent>

@@ -3,6 +3,8 @@
 import { useQuery } from "@tanstack/react-query"
 import { FC, ReactNode, useState } from "react"
 
+import { LuArrowRight, LuGlobe } from "react-icons/lu"
+
 import {
     Pagination,
     PaginationContent,
@@ -12,13 +14,14 @@ import {
     PaginationLink,
 } from "@/components/ui/pagination"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { getClientTypeIcon, getClientTypeName } from "@/utils/render-client-type"
 import { findManyClients, FindManyClientsResponse } from "@/services/api/clients"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card"
-import { Button } from "../../ui/button"
-import { getClientTypeIcon, getClientTypeName, renderClientType } from "../../../utils/render-client-type"
-import { Badge } from "../../ui/badge"
-import { LuArrowRight, LuGlobe } from "react-icons/lu"
-import configHelper from "../../../helpers/config"
+import { Typography } from "@/components/ui/typography"
+import { Button } from "@/components/ui/button"
+import Spinner from "@/components/ui/spinner"
+import { Badge } from "@/components/ui/badge"
+import configHelper from "@/helpers/config"
 
 type Props = {
     children: ReactNode
@@ -58,7 +61,6 @@ const ClientSelectorDialog: FC<Props> = ({
                             className={page === 1 ? "pointer-events-none opacity-50" : ""}
                         />
                     </PaginationItem>
-
                     {pages.map((p) => (
                         <PaginationItem key={p}>
                             <PaginationLink isActive={p === page} onClick={() => setPage(p)}>
@@ -66,7 +68,6 @@ const ClientSelectorDialog: FC<Props> = ({
                             </PaginationLink>
                         </PaginationItem>
                     ))}
-
                     <PaginationItem>
                         <PaginationNext
                             onClick={() => setPage((p) => Math.min(p + 1, lastPage))}
@@ -85,18 +86,24 @@ const ClientSelectorDialog: FC<Props> = ({
                 <DialogHeader>
                     <DialogTitle>Selecione um Cliente</DialogTitle>
                 </DialogHeader>
-
                 {isLoading ? (
-                    <div>Carregando...</div>
+                    <Typography.P className="animate-pulse duration-500">
+                        <Spinner /> Carregando...
+                    </Typography.P>
                 ) : isError ? (
-                    <div>Erro ao buscar clientes</div>
+                    <Typography.P className="text-red-500">Erro ao buscar clientes</Typography.P>
                 ) : (
                     <div>
                         <div className="space-y-2 mt-4">
                             {clients.map((client) => (
                                 <Card key={client.id}>
                                     <CardHeader>
-                                        <CardTitle className="flex gap-2 items-center"><LuGlobe/> {client.name} <Badge variant="outline">{getClientTypeIcon(client.type)} {getClientTypeName(client.type)}</Badge></CardTitle>
+                                        <CardTitle className="flex gap-2 items-center">
+                                            <LuGlobe /> {client.name}{" "}
+                                            <Badge variant="outline">
+                                                {getClientTypeIcon(client.type)} {getClientTypeName(client.type)}
+                                            </Badge>
+                                        </CardTitle>
                                         {client.description && <CardDescription>{client.description}</CardDescription>}
                                     </CardHeader>
                                     <CardContent>
@@ -109,13 +116,14 @@ const ClientSelectorDialog: FC<Props> = ({
                                                 }}
                                                 size="xs"
                                             >
-                                                {currentClientId === client.id ? "Selecionado" : (
+                                                {currentClientId === client.id ? (
+                                                    "Selecionado"
+                                                ) : (
                                                     <>
                                                         Selecionar
-                                                        <LuArrowRight/>
+                                                        <LuArrowRight />
                                                     </>
                                                 )}
-                                                
                                             </Button>
                                         </div>
                                     </CardContent>
