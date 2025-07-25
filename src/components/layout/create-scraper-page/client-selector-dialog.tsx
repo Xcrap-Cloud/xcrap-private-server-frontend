@@ -3,7 +3,9 @@
 import { useQuery } from "@tanstack/react-query"
 import { FC, ReactNode, useState } from "react"
 
-import { LuArrowRight, LuGlobe } from "react-icons/lu"
+import { LuArrowRight, LuExternalLink, LuGlobe } from "react-icons/lu"
+
+import NextLink from "next/link"
 
 import {
     Pagination,
@@ -108,23 +110,31 @@ const ClientSelectorDialog: FC<Props> = ({
                                     </CardHeader>
                                     <CardContent>
                                         <div className="flex justify-end">
-                                            <Button
-                                                disabled={currentClientId === client.id}
-                                                onClick={() => {
-                                                    onChangeClientId(client.id)
-                                                    setOpen(false)
-                                                }}
-                                                size="xs"
-                                            >
-                                                {currentClientId === client.id ? (
-                                                    "Selecionado"
-                                                ) : (
-                                                    <>
-                                                        Selecionar
-                                                        <LuArrowRight />
-                                                    </>
-                                                )}
-                                            </Button>
+                                            <div className="flex gap-2">
+                                                <Button size="xs" variant="secondary" asChild>
+                                                    <NextLink target="_blank" href={`/clients/${client.id}`}>
+                                                        Visulizar
+                                                        <LuExternalLink />
+                                                    </NextLink>
+                                                </Button>
+                                                <Button
+                                                    disabled={currentClientId === client.id}
+                                                    onClick={() => {
+                                                        onChangeClientId(client.id)
+                                                        setOpen(false)
+                                                    }}
+                                                    size="xs"
+                                                >
+                                                    {currentClientId === client.id ? (
+                                                        "Selecionado"
+                                                    ) : (
+                                                        <>
+                                                            Selecionar
+                                                            <LuArrowRight />
+                                                        </>
+                                                    )}
+                                                </Button>
+                                            </div>
                                         </div>
                                     </CardContent>
                                 </Card>

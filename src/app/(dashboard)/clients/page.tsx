@@ -11,7 +11,7 @@ const ClientsPage: FC = async () => {
     const initialData = await findManyClients(undefined, accessToken)
 
     return (
-        <div>
+        <div className="max-w-7xl mx-auto py-6">
             <ClientsPageTopSection />
             <ClientsListSection initialData={initialData} accessToken={accessToken} />
         </div>

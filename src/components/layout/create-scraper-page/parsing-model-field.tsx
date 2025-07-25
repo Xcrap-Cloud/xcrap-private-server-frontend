@@ -1,7 +1,9 @@
+"use client"
+
 import { useFormContext } from "react-hook-form"
 import { ChangeEvent, FC } from "react"
 
-import { LuBraces, LuBrackets, LuTrash } from "react-icons/lu"
+import { LuBraces, LuBrackets, LuLayers, LuTrash } from "react-icons/lu"
 
 import {
     Select,
@@ -44,7 +46,19 @@ const ParsingModelField: FC<Props> = ({ path, name, onRemove, onRename }) => {
         <Card>
             <CardHeader>
                 <div className="flex justify-between items-center">
-                    <Typography.Code className="text-xs">{name}</Typography.Code>
+                    <div className="flex gap-2">
+                        <Label htmlFor={`field-${name}-name-input`} className="whitespace-nowrap text-xs">
+                            Nome *:
+                        </Label>
+                        <Input
+                            id={`field-${name}-name-input`}
+                            size="xs"
+                            placeholder="#element"
+                            value={name}
+                            onChange={handleChangeInputName}
+                            className="max-w-48"
+                        />
+                    </div>
                     <div className="flex gap-2">
                         <FormField
                             control={form.control}
@@ -92,10 +106,10 @@ const ParsingModelField: FC<Props> = ({ path, name, onRemove, onRename }) => {
                 </div>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-x-2 gap-y-6">
-                <div className="space-y-2 col-span-2">
+                {/* <div className="space-y-2 col-span-2">
                     <Label>Nome *</Label>
-                    <Input placeholder="#element" value={name} onChange={handleChangeInputName} />
-                </div>
+                    <Input size="xs" placeholder="#element" value={name} onChange={handleChangeInputName} />
+                </div> */}
                 <FormField
                     control={form.control}
                     name={`${path}.query` as any}
@@ -149,6 +163,11 @@ const ParsingModelField: FC<Props> = ({ path, name, onRemove, onRename }) => {
                         </FormItem>
                     )}
                 />
+                <div className="flex justify-end col-span-2">
+                    <Button size="xs" variant="secondary">
+                        <LuLayers /> Adicionar Alinhamento
+                    </Button>
+                </div>
             </CardContent>
         </Card>
     )

@@ -11,7 +11,7 @@ const ScrapersPage: FC = async () => {
     const initialData = await findManyScrapers(undefined, accessToken)
 
     return (
-        <div>
+        <div className="max-w-7xl mx-auto py-6">
             <ScrapersPageTopSection />
             <ScrapersListSection initialData={initialData} accessToken={accessToken} />
         </div>

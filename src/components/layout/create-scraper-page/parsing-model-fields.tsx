@@ -16,7 +16,7 @@ type Props = {
 
 const ParsingModelFields: FC<Props> = ({ basePath }) => {
     const form = useFormContext<CreateScraperDto>()
-    const values = form.getValues(basePath as any)
+    const values = form.watch(basePath as any)
     const fieldsCount = Object.keys(values).length
     const hasFields = fieldsCount > 0
 
@@ -47,6 +47,12 @@ const ParsingModelFields: FC<Props> = ({ basePath }) => {
         form.clearErrors(`${basePath}.${oldName}` as any)
     }
 
+    const handleRemoveField = (field: string) => {
+        const confim = window.confirm(`Você tem certeza que deseja apagar o campo '${field}'?`)
+        if (!confim) return
+        removeField(field)
+    }
+
     const handleClickOnAddFieldButton = () => {
         addField(`field_${fieldsCount}`)
     }
@@ -60,7 +66,7 @@ const ParsingModelFields: FC<Props> = ({ basePath }) => {
                             <ParsingModelField
                                 name={key}
                                 path={`${basePath}.${key}`}
-                                onRemove={() => removeField(key)}
+                                onRemove={() => handleRemoveField(key)}
                                 onRename={(newName) => renameField(key, newName)}
                             />
                         ))}
