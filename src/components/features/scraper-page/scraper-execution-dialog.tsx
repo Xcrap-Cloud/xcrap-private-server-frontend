@@ -97,7 +97,7 @@ const ScraperExecutionDialog: FC<Props> = ({ children, onExecute, sholdProvideUr
                             name="url"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>URL Alvo {sholdProvideUrl && "*"}</FormLabel>
+                                    <FormLabel>URL alvo {sholdProvideUrl ? "*" : "(opcional)"}</FormLabel>
                                     <FormControl>
                                         <Input placeholder="https://example.com" {...field} />
                                     </FormControl>
