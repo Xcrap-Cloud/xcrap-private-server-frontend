@@ -128,9 +128,7 @@ const ScraperPageSection: FC<Props> = ({ data, accessToken }) => {
                         <Avatar>
                             <AvatarFallback>{data.owner.name[0].toUpperCase()}</AvatarFallback>
                         </Avatar>
-                        <Typography.Muted>
-                            <Link href={`/users/${data.owner.id}`}>{data.owner.name}</Link>
-                        </Typography.Muted>
+                        <Typography.Muted>{data.owner.name}</Typography.Muted>
                     </div>
                 </CardFooter>
             </Card>
