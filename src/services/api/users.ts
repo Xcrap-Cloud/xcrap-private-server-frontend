@@ -20,3 +20,24 @@ export async function findOneUser(id: string, accessToken: string) {
 
     return response.data
 }
+
+type FindManyUsersOptions = {
+    page?: number
+    perPage?: number
+}
+
+type FindManyUsersResponse = {}
+
+export async function findManyUsers({ page, perPage }: FindManyUsersOptions = {}, accessToken: string) {
+    const response = await api.get<FindManyUsersResponse>("/scrapers", {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+            page,
+            perPage,
+        },
+    })
+
+    return response.data
+}
