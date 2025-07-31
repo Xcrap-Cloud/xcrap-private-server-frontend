@@ -13,6 +13,7 @@ export function getClientTypeIcon(type: string): ReactNode {
         axios: <SiAxios className="text-[#5A29E4]" />,
         got_scraping: <MdHttp className="text-[#8085BB]" />,
         http_core: <SiNodedotjs className="text-[#73AA63]" />,
+        impit: <MdHttp className="text-[#75492F]" />,
     }
 
     if (!(type in iconMap)) {
@@ -30,6 +31,7 @@ export function getClientTypeName(type: string): string {
         axios: "Axios",
         got_scraping: "Got Scraping",
         http_core: "HTTP Core",
+        impit: "Impit",
     }
 
     if (!(type in nameMap)) {
