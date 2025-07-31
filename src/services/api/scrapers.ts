@@ -144,12 +144,12 @@ interface Meta {
     next: number | null
 }
 
-interface PaginateOptions {
+interface FindManyScrapersOptions {
     page?: number
     perPage?: number
 }
 
-export async function findManyScrapers({ page, perPage }: PaginateOptions = {}, accessToken: string) {
+export async function findManyScrapers({ page, perPage }: FindManyScrapersOptions = {}, accessToken: string) {
     const response = await api.get<FindManyScrapersResponse>("/scrapers", {
         headers: {
             Authorization: `Bearer ${accessToken}`,
