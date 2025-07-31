@@ -74,12 +74,12 @@ interface Meta {
     next: number | null
 }
 
-interface PaginateOptions {
+interface FindManyClientsOptions {
     page?: number
     perPage?: number
 }
 
-export async function findManyClients({ page, perPage }: PaginateOptions = {}, accessToken: string) {
+export async function findManyClients({ page, perPage }: FindManyClientsOptions = {}, accessToken: string) {
     const response = await api.get<FindManyClientsResponse>("/clients", {
         headers: {
             Authorization: `Bearer ${accessToken}`,
