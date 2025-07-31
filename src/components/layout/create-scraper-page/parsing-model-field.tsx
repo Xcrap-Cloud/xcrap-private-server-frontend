@@ -19,7 +19,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { CreateScraperDto } from "@/dto/scrapers/create-scraper"
 import { getExtractorName } from "@/utils/get-extractor-name"
 import { getExtractorIcon } from "@/utils/get-extractor-icon"
-import { Typography } from "@/components/ui/typography"
 import { Extractor } from "@/enums/scrapers/extractor"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
@@ -106,18 +105,14 @@ const ParsingModelField: FC<Props> = ({ path, name, onRemove, onRename }) => {
                 </div>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-x-2 gap-y-6">
-                {/* <div className="space-y-2 col-span-2">
-                    <Label>Nome *</Label>
-                    <Input size="xs" placeholder="#element" value={name} onChange={handleChangeInputName} />
-                </div> */}
                 <FormField
                     control={form.control}
                     name={`${path}.query` as any}
-                    render={() => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>Query (opcional)</FormLabel>
                             <FormControl>
-                                <Input placeholder="#element" />
+                                <Input placeholder="#element" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -126,11 +121,11 @@ const ParsingModelField: FC<Props> = ({ path, name, onRemove, onRename }) => {
                 <FormField
                     control={form.control}
                     name={`${path}.extractor` as any}
-                    render={() => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>Extrator (opcional)</FormLabel>
                             <FormControl>
-                                <Select>
+                                <Select value={field.value} onValueChange={field.onChange}>
                                     <SelectTrigger className="w-full">
                                         <SelectValue placeholder="Selecione um Extrator" />
                                     </SelectTrigger>
@@ -153,11 +148,11 @@ const ParsingModelField: FC<Props> = ({ path, name, onRemove, onRename }) => {
                 <FormField
                     control={form.control}
                     name={`${path}.default` as any}
-                    render={() => (
+                    render={({ field }) => (
                         <FormItem className="col-span-2">
                             <FormLabel>Valor padrão (opcional)</FormLabel>
                             <FormControl>
-                                <Textarea className="min-h-24" />
+                                <Textarea className="min-h-24" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -165,7 +160,7 @@ const ParsingModelField: FC<Props> = ({ path, name, onRemove, onRename }) => {
                 />
                 <div className="flex justify-end col-span-2">
                     <Button size="xs" variant="secondary">
-                        <LuLayers /> Adicionar Alinhamento
+                        <LuLayers /> Adicionar alinhamento
                     </Button>
                 </div>
             </CardContent>
