@@ -24,14 +24,13 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useCreateUserForm } from "@/hooks/forms/use-create-user-form"
 import { CreateUserDto } from "@/dto/users/create-user"
-import { UserRole } from "../../enums/users/role"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { UserRole } from "@/enums/users/role"
 
 type Props = {
     children: ReactNode
 }
-
 
 const CreateUserDialog: FC<Props> = ({ children }) => {
     const form = useCreateUserForm()
